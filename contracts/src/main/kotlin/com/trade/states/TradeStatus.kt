@@ -1,4 +1,4 @@
-package com.template.states
+package com.trade.states
 
 import net.corda.core.serialization.CordaSerializable
 

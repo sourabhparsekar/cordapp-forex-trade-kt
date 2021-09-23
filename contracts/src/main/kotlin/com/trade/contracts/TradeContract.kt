@@ -1,14 +1,14 @@
-package com.template.contracts
+package com.trade.contracts
 
-import com.template.states.TradeState
-import com.template.states.TradeStatus
+import com.trade.states.TradeState
+import com.trade.states.TradeStatus
 import net.corda.core.contracts.*
 import net.corda.core.transactions.LedgerTransaction
 
 class TradeContract : Contract {
     companion object {
         // Used to identify our contract when building a transaction.
-        const val ID = "com.template.contracts.TradeContract"
+        const val ID = "com.trade.contracts.TradeContract"
     }
 
     /**

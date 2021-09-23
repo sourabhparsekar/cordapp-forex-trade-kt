@@ -1,8 +1,8 @@
-package com.template.webserver
+package com.trade.webserver
 
-import com.template.flows.CreateAndAssignTradeInitiator
-import com.template.flows.TradeDecisionInitiator
-import com.template.states.TradeState
+import com.trade.flows.CreateAndAssignTradeInitiator
+import com.trade.flows.TradeDecisionInitiator
+import com.trade.states.TradeState
 import io.swagger.annotations.ApiOperation
 import net.corda.core.flows.FlowException
 import net.corda.core.identity.CordaX500Name

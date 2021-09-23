@@ -1,6 +1,6 @@
-package com.template.states
+package com.trade.states
 
-import com.template.contracts.TradeContract
+import com.trade.contracts.TradeContract
 import net.corda.core.contracts.BelongsToContract
 import net.corda.core.contracts.LinearState
 import net.corda.core.contracts.UniqueIdentifier

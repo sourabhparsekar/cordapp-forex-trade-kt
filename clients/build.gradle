@@ -34,35 +34,37 @@ dependencies {
 
 }
 
-
 springBoot {
-    mainClassName = "com.template.webserver.ServerKt"
+    mainClassName = "com.trade.webserver.ServerKt"
 }
 
 /* The Client is the communication channel between the external and the node. This task will help you immediately
  * execute your rpc methods in the main method of the client.kt. You can somewhat see this as a quick test of making
  * RPC calls to your nodes.
  */
-task runTemplateClient(type: JavaExec, dependsOn: assemble) {
+task runTradeClientPartyA(type: JavaExec, dependsOn: assemble) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.ClientKt'
+    main = 'com.trade.ClientKt'
     args 'localhost:10006', 'user1', 'test'
 }
 
-/* This task will start the springboot server that connects to your node (via RPC connection). All of the http requests
- * are in the Controller file. You can leave the Server.kt and NodeRPCConnection.kt file untouched for your use.
- */
-task runTemplateServerPartyA(type: JavaExec, dependsOn: assemble) {
+task runTradeClientPartyB(type: JavaExec, dependsOn: assemble) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.webserver.ServerKt'
-    args '--server.port=10050', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=test'
+    main = 'com.trade.ClientKt'
+    args 'localhost:10009', 'user1', 'test'
 }
 
 /* This task will start the springboot server that connects to your node (via RPC connection). All of the http requests
  * are in the Controller file. You can leave the Server.kt and NodeRPCConnection.kt file untouched for your use.
  */
-task runTemplateServerPartyB(type: JavaExec, dependsOn: assemble) {
+task runTradeServerPartyA(type: JavaExec, dependsOn: assemble) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'com.template.webserver.ServerKt'
+    main = 'com.trade.webserver.ServerKt'
+    args '--server.port=10050', '--config.rpc.host=localhost', '--config.rpc.port=10006', '--config.rpc.username=user1', '--config.rpc.password=test'
+}
+
+task runTradeServerPartyB(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.trade.webserver.ServerKt'
     args '--server.port=10051', '--config.rpc.host=localhost', '--config.rpc.port=10009', '--config.rpc.username=user1', '--config.rpc.password=test'
 }

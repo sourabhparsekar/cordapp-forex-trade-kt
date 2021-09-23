@@ -1,7 +1,7 @@
-package com.template.contracts
+package com.trade.states
 
-import com.template.states.TradeState
-import com.template.states.TradeStatus
+import com.trade.states.TradeState
+import com.trade.states.TradeStatus
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.identity.Party
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.template.contracts
+package com.trade.contracts
 
 import net.corda.core.contracts.CommandData
 

@@ -1,12 +1,14 @@
-package com.template.contracts
+package com.trade.contracts
 
 import net.corda.core.identity.CordaX500Name
 import net.corda.testing.core.TestIdentity
 import net.corda.testing.node.MockServices
 import net.corda.testing.node.ledger
 import org.junit.Test
-import com.template.states.TradeState
-import com.template.states.TradeStatus
+import com.trade.states.TradeState
+import com.trade.states.TradeStatus
+import com.trade.contracts.TradeCommands
+import com.trade.contracts.TradeContract
 import net.corda.core.contracts.UniqueIdentifier
 import java.util.*
 

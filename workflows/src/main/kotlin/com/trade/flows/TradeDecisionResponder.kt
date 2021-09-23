@@ -1,18 +1,17 @@
-package com.template.flows
+package com.trade.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import com.template.states.TradeState
+import com.trade.states.TradeState
 import net.corda.core.flows.*
 import net.corda.core.transactions.SignedTransaction
 
 // ******************
 // * Responder flow *
 // ******************
-@InitiatedBy(CreateAndAssignTradeInitiator::class)
-class CreateAndAssignTradeResponder(
+@InitiatedBy(TradeDecisionInitiator::class)
+class TradeDecisionResponder (
     val counterpartySession: FlowSession
 ) : FlowLogic<SignedTransaction>() {
-
     /**
      * This is where you fill out your business logic.
      */
@@ -41,4 +40,5 @@ class CreateAndAssignTradeResponder(
         )
 
     }
+
 }

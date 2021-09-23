@@ -1,9 +1,9 @@
-package com.template.flows
+package com.trade.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import com.template.contracts.TradeCommands
-import com.template.states.TradeState
-import com.template.states.TradeStatus
+import com.trade.contracts.TradeCommands
+import com.trade.states.TradeState
+import com.trade.states.TradeStatus
 import net.corda.core.flows.*
 import net.corda.core.identity.Party
 import net.corda.core.transactions.SignedTransaction

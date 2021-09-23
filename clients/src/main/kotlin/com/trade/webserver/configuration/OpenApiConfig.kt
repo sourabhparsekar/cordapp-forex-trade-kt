@@ -1,4 +1,4 @@
-package com.template.webserver
+package com.trade.webserver.configuration
 
 
 import com.google.common.base.Predicates
