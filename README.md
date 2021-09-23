@@ -140,3 +140,8 @@ You should extend this template as follows:
 
 For a guided example of how to extend this template, see the Hello, World! tutorial 
 [here](https://docs.corda.net/hello-world-introduction.html).
+
+
+FLOW Tests : 
+
+flow start Cre sellCurrencyType: "$", sellCurrencyValue: 100, buyCurrencyType: "Euro", buyCurrencyValue: 50, tradeCounterPartyName: "PartyB"

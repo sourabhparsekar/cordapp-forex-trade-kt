@@ -1,45 +1,132 @@
 package com.template
 
+import com.template.flows.CreateAndAssignTradeInitiator
+import com.template.flows.TradeDecisionInitiator
 import net.corda.testing.node.*
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import com.template.states.TemplateState
-import java.util.concurrent.Future;
 import net.corda.core.node.services.vault.QueryCriteria
-import net.corda.core.transactions.SignedTransaction
-import com.template.flows.Initiator
+import com.template.states.TradeState
+import com.template.states.TradeStatus
 import net.corda.core.node.services.Vault.StateStatus
+import org.junit.FixMethodOrder
+import org.junit.runners.MethodSorters
+import kotlin.test.assertEquals
 
+class FlowTests : AbstractFlowConfiguration() {
 
-class FlowTests {
-    private lateinit var network: MockNetwork
-    private lateinit var a: StartedMockNode
-    private lateinit var b: StartedMockNode
-
-    @Before
-    fun setup() {
-        network = MockNetwork(MockNetworkParameters(cordappsForAllNodes = listOf(
-                TestCordapp.findCordapp("com.template.contracts"),
-                TestCordapp.findCordapp("com.template.flows")
-        )))
-        a = network.createPartyNode()
-        b = network.createPartyNode()
-        network.runNetwork()
-    }
-
-    @After
-    fun tearDown() {
-        network.stopNodes()
-    }
     @Test
-    fun `DummyTest`() {
-        val flow = Initiator(b.info.legalIdentities[0])
-        val future: Future<SignedTransaction> = a.startFlow(flow)
-        network.runNetwork()
+    fun `accept trade state between 2 parties`() {
 
-        //successful query means the state is stored at node b's vault. Flow went through.
-        val inputCriteria: QueryCriteria = QueryCriteria.VaultQueryCriteria().withStatus(StateStatus.UNCONSUMED)
-        val state = b.services.vaultService.queryBy(TemplateState::class.java, inputCriteria).states[0].state.data
+        val counterPartyName = counterParty.name.organisation
+        println("CounterParty $counterPartyName")
+
+        val createAndAssignTradeInitiator = CreateAndAssignTradeInitiator(
+            "Dollar",
+            10,
+            "Euro",
+            7,
+            counterPartyName
+        )
+
+        initiatorNode.startFlow(createAndAssignTradeInitiator).toCompletableFuture()
+
+        mockNetwork.waitQuiescent()
+
+        val queryCriteria = QueryCriteria.VaultQueryCriteria().withStatus(StateStatus.UNCONSUMED)
+
+        var stateA =
+            initiatorNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.INITIATED }.state.data
+        var stateB =
+            counterPartyNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.INITIATED }.state.data
+
+        assertEquals(stateA, stateB, "Same state should be available in both nodes")
+
+        val tradeDecisionInitiator = TradeDecisionInitiator(
+            stateB.linearId.toString(),
+            true
+        )
+
+        counterPartyNode.startFlow(tradeDecisionInitiator)
+
+        mockNetwork.waitQuiescent()
+
+        val stateASuccess =
+            initiatorNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.SUCCESS }.state.data
+        val stateBSuccess =
+            counterPartyNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.SUCCESS }.state.data
+
+        assertEquals(stateASuccess, stateBSuccess, "Same state should be available in both nodes")
+
+        assertEquals(stateA.linearId, stateASuccess.linearId)
+    }
+
+    @Test
+    fun `decline trade state between 2 parties`() {
+
+        val counterPartyName = counterParty.name.organisation
+        println("CounterParty $counterPartyName")
+
+        val createAndAssignTradeInitiator = CreateAndAssignTradeInitiator(
+            "Dollar",
+            10,
+            "Euro",
+            7,
+            counterPartyName
+        )
+
+        initiatorNode.startFlow(createAndAssignTradeInitiator).toCompletableFuture()
+
+        mockNetwork.waitQuiescent()
+
+        val queryCriteria = QueryCriteria.VaultQueryCriteria().withStatus(StateStatus.UNCONSUMED)
+
+        var stateA =
+            initiatorNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.INITIATED }.state.data
+        var stateB =
+            counterPartyNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.INITIATED }.state.data
+
+        assertEquals(stateA, stateB, "Same state should be available in both nodes")
+
+        val tradeDecisionInitiator = TradeDecisionInitiator(
+            stateB.linearId.toString(),
+            false
+        )
+
+        counterPartyNode.startFlow(tradeDecisionInitiator)
+
+        mockNetwork.waitQuiescent()
+
+        val stateAFailure =
+            initiatorNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.FAILURE }.state.data
+        val stateBFailure =
+            counterPartyNode.services.vaultService.queryBy(
+                TradeState::class.java,
+                queryCriteria
+            ).states.first { it.state.data.tradeStatus == TradeStatus.FAILURE }.state.data
+
+        assertEquals(stateAFailure, stateBFailure, "Same state should be available in both nodes")
+
+        assertEquals(stateA.linearId, stateAFailure.linearId)
     }
 }
