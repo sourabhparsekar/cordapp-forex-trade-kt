@@ -10,7 +10,7 @@ import net.corda.core.serialization.CordaSerializable
 
 @BelongsToContract(TradeContract::class)
 @CordaSerializable
-data class TradeState (
+data class TradeState(
     val sellCurrencyType: String,
     val sellCurrencyValue: Int,
     val buyCurrencyType: String,

@@ -1,16 +1,11 @@
 package com.trade.flows
 
-import com.trade.flows.CreateAndAssignTradeInitiator
-import com.trade.flows.TradeDecisionInitiator
-import net.corda.testing.node.*
-import org.junit.Test
-import net.corda.core.node.services.vault.QueryCriteria
+import com.trade.AbstractFlowConfiguration
 import com.trade.states.TradeState
 import com.trade.states.TradeStatus
-import com.trade.AbstractFlowConfiguration
 import net.corda.core.node.services.Vault.StateStatus
-import org.junit.FixMethodOrder
-import org.junit.runners.MethodSorters
+import net.corda.core.node.services.vault.QueryCriteria
+import org.junit.Test
 import kotlin.test.assertEquals
 
 class FlowTests : AbstractFlowConfiguration() {

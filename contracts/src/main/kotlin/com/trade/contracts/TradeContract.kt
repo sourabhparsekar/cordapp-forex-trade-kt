@@ -2,7 +2,8 @@ package com.trade.contracts
 
 import com.trade.states.TradeState
 import com.trade.states.TradeStatus
-import net.corda.core.contracts.*
+import net.corda.core.contracts.Contract
+import net.corda.core.contracts.requireThat
 import net.corda.core.transactions.LedgerTransaction
 
 class TradeContract : Contract {
@@ -65,7 +66,11 @@ class TradeContract : Contract {
                     "Trade Sell Currency Value cannot be empty or zero.".using(outputTradeState.sellCurrencyValue > 0)
                     "Trade Buy Currency Value cannot be empty or zero.".using(outputTradeState.buyCurrencyValue > 0)
                     "Trade Status should be Success/Failure Trade Exchange.".using(TradeStatus.INITIATED != outputTradeState.tradeStatus)
-                    "Linear ID should be same for input/output Trade State".using(inputTradeState.linearId.equals(outputTradeState.linearId))
+                    "Linear ID should be same for input/output Trade State".using(
+                        inputTradeState.linearId.equals(
+                            outputTradeState.linearId
+                        )
+                    )
                 }
 
         }

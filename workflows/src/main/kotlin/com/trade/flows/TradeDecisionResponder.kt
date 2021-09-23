@@ -9,7 +9,7 @@ import net.corda.core.transactions.SignedTransaction
 // * Responder flow *
 // ******************
 @InitiatedBy(TradeDecisionInitiator::class)
-class TradeDecisionResponder (
+class TradeDecisionResponder(
     val counterpartySession: FlowSession
 ) : FlowLogic<SignedTransaction>() {
     /**
