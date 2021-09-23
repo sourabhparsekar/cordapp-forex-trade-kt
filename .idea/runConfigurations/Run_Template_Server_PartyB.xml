@@ -1,17 +1,17 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Template Server" type="JetRunConfigurationType" factoryName="Kotlin" singleton="true">
-    <module name="com.template.clients.main" />
+  <configuration default="false" name="Run Template Server PartyB" type="JetRunConfigurationType" singleton="true">
+    <module name="cordapp-forex-trade-kt.clients.main" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="" />
-    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8.0.302" />
     <option name="PASS_PARENT_ENVS" value="true" />
-    <option name="MAIN_CLASS_NAME" value="com.template.webserver.ServerKt" />
+    <option name="MAIN_CLASS_NAME" value="com.trade.webserver.ServerKt" />
     <option name="WORKING_DIRECTORY" value="" />
     <envs>
-      <env name="server.port" value="10050" />
+      <env name="server.port" value="10051" />
       <env name="config.rpc.host" value="localhost" />
-      <env name="config.rpc.port" value="10006" />
+      <env name="config.rpc.port" value="10009" />
       <env name="config.rpc.username" value="user1" />
       <env name="config.rpc.password" value="test" />
     </envs>
